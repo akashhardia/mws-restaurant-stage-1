@@ -293,3 +293,18 @@ nav h1 a {
 #restaurant-hours td {
   color: #666;
 }
+
+/* ====================== Accessibility ====================== */
+.skip-link{
+  position: absolute;
+  top: -15em;
+  left: -15em;
+  padding: 0.8em;
+  text-decoration: none;
+  font-size: 1rem;
+}
+.skip-link:focus{
+  top: 0;
+  left: 0;
+  background: whitesmoke;
+}
