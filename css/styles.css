@@ -308,3 +308,91 @@ nav h1 a {
   left: 0;
   background: whitesmoke;
 }
+
+/* ====================== Responsiveness ====================== */
+img, embed, object, video {
+  max-width: 100%;
+}
+#restaurants-container{
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center; 
+}
+.filter-options {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+.filter-options h2 {
+  flex-direction: column;
+  flex-wrap: nowrap;
+}
+#restaurants-list {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+/* ====================== Media Breakpoints ====================== */
+@media screen and (max-width: 30.81em) {
+  nav h1 a {
+    font-size: 1rem;
+  }
+  #restaurant-name,#reviews-container h2 {
+    font-size: 1.2rem;
+  }
+  .filter-options h2 {
+    display: none;
+  }
+  .inside #map-container {
+    position: relative;
+    height: 20em;
+    width: 100%;
+  }
+  #restaurant-container{
+    min-width: 17em;
+    width: 90%;
+    order: 2;
+    flex-wrap: wrap;
+  }
+  #reviews-container{
+    min-width: 17em;
+    width: 90%;
+    order:3;
+  } 
+}
+@media screen and (min-width: 30.82em) and (max-width: 55em) {
+  .filter-options select {    
+    font-size: 1rem;
+    height: 2rem;
+  }
+  .inside #map-container {
+    position: relative;
+    height: 20em;
+    width: 100%;
+  }
+  #restaurant-container{
+    min-width: 17em;
+    width: 90%;
+    order: 2;
+    flex-wrap: wrap;
+  }
+  #reviews-container{
+    min-width: 17em;
+    width: 90%;
+    order:3;
+  } 
+}
+@media screen and (min-width: 55.01em){
+    .filter-options h2 {
+      display: inline;
+    }
+    #reviews-list li {
+      padding: 0px;
+      width: 90%;
+    }
+    #footer {
+      padding: 0px;
+    }
+}
