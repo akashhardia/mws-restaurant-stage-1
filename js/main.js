@@ -1,8 +1,8 @@
 let restaurants,
-  neighborhoods,
-  cuisines
+    neighborhoods,
+    cuisines
 var newMap
-var markers = []
+let markers = []
 
 /**
  * Fetch neighborhoods and cuisines as soon as the page is loaded.
@@ -12,6 +12,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
   fetchNeighborhoods();
   fetchCuisines();
 });
+
 
 /**
  * Fetch all neighborhoods and set their HTML.
@@ -36,6 +37,7 @@ fillNeighborhoodsHTML = (neighborhoods = self.neighborhoods) => {
     const option = document.createElement('option');
     option.innerHTML = neighborhood;
     option.value = neighborhood;
+    option.label = neighborhood;
     select.append(option);
   });
 }
@@ -64,6 +66,7 @@ fillCuisinesHTML = (cuisines = self.cuisines) => {
     const option = document.createElement('option');
     option.innerHTML = cuisine;
     option.value = cuisine;
+    option.label = cuisine;
     select.append(option);
   });
 }
@@ -78,7 +81,7 @@ initMap = () => {
         scrollWheelZoom: false
       });
   L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.jpg70?access_token={mapboxToken}', {
-    mapboxToken: '<your MAPBOX API KEY HERE>',
+    mapboxToken: 'pk.eyJ1IjoiYWthc2hoYXJkaWEiLCJhIjoiY2puY3M1eGo4MGR0YTNwc2ZpY2s5NXBlaCJ9.I9z0aPWVhz_uZNjrF1Fqeg',
     maxZoom: 18,
     attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, ' +
       '<a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
@@ -161,6 +164,7 @@ createRestaurantHTML = (restaurant) => {
   const image = document.createElement('img');
   image.className = 'restaurant-img';
   image.src = DBHelper.imageUrlForRestaurant(restaurant);
+  image.alt = DBHelper.altForRestaurant(restaurant);          // alt for image
   li.append(image);
 
   const name = document.createElement('h1');
@@ -198,6 +202,24 @@ addMarkersToMap = (restaurants = self.restaurants) => {
   });
 
 } 
+
+  /**
+   * Register the service worker
+   */
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('/sw.js', {scope:'/'})
+    .then(function(registration) {
+      // Registration was successful
+      console.log('Service Worker registered', registration.scope);
+    })
+    .catch(function(err) {
+      // Registration failed
+      console.log('Service Worker registration failed: ', err);
+    });
+  }
+
+
+
 /* addMarkersToMap = (restaurants = self.restaurants) => {
   restaurants.forEach(restaurant => {
     // Add marker to the map
@@ -208,4 +230,3 @@ addMarkersToMap = (restaurants = self.restaurants) => {
     self.markers.push(marker);
   });
 } */
-
