@@ -1,9 +1,9 @@
 
 {
   "name": "Restaurants Reviews",
-  "short_name": "Site 😎",
+  "short_name": "Restaurants",
   "description": "Shows list of various Restaurants",
-  "start_url": "/",
+  "start_url": "/index.html",
   "background_color": "#000000",
   "theme_color": "#0f4a73",
    "icons": [{
