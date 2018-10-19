@@ -74,6 +74,7 @@ fillCuisinesHTML = (cuisines = self.cuisines) => {
 /**
  * Initialize leaflet map, called from HTML.
  */
+
 initMap = () => {
   self.newMap = L.map('map', {
         center: [40.722216, -73.987501],
@@ -89,8 +90,29 @@ initMap = () => {
     id: 'mapbox.streets'
   }).addTo(newMap);
 
-  updateRestaurants();
+  showRestaurantsBasedOnSelection();
+  
 }
+
+function showRestaurantsBasedOnSelection(){
+    const cSelect = document.getElementById('cuisines-select');
+    const nSelect = document.getElementById('neighborhoods-select');
+
+    const cIndex = cSelect.selectedIndex;
+    const nIndex = nSelect.selectedIndex;
+
+    const cuisine = cSelect[cIndex].value;
+    const neighborhood = nSelect[nIndex].value;
+    DBHelper.fetchRestaurantByCuisineAndNeighborhood(cuisine, neighborhood, (error, restaurants) => {
+      if (error) { // Got an error!
+        console.error(error);
+      } else {      
+        resetRestaurants(restaurants);
+        fillRestaurantsHTML();
+        
+      }
+    })
+}    
 /* window.initMap = () => {
   let loc = {
     lat: 40.722216,
@@ -123,10 +145,34 @@ updateRestaurants = () => {
     } else {
       resetRestaurants(restaurants);
       fillRestaurantsHTML();
+      srcSetter();
     }
   })
 }
 
+function srcSetter(){
+  
+      console.log("changing src");
+      
+      let img = document.querySelectorAll('#restaurants-list>li>img')
+      
+      let i;
+      if(img.length===0){
+        showRestaurantsBasedOnSelection();
+      }
+  
+      for (i = 0; i < img.length; i++) {
+            console.log("imgae src updated before")
+            console.log(img[i].getAttribute('data-src'));
+            
+            img[i].setAttribute('src',img[i].getAttribute('data-src')); 
+            
+            console.log('immgae src updated after');
+
+        }
+    
+      console.log("images loaded");
+}
 /**
  * Clear current restaurants, their HTML and remove their map markers.
  */
@@ -148,11 +194,17 @@ resetRestaurants = (restaurants) => {
  * Create all restaurants HTML and add them to the webpage.
  */
 fillRestaurantsHTML = (restaurants = self.restaurants) => {
+
+  console.log("fillRestaurantsHTML begin");
+ 
   const ul = document.getElementById('restaurants-list');
   restaurants.forEach(restaurant => {
     ul.append(createRestaurantHTML(restaurant));
   });
   addMarkersToMap();
+  srcSetter();
+  console.log("fillRestaurantsHTML end");
+
 }
 
 /**
@@ -163,7 +215,8 @@ createRestaurantHTML = (restaurant) => {
 
   const image = document.createElement('img');
   image.className = 'restaurant-img';
-  image.src = DBHelper.imageUrlForRestaurant(restaurant);
+  image.setAttribute('data-src', DBHelper.imageUrlForRestaurant(restaurant));
+  image.src = 'img/img.png';
   image.alt = DBHelper.altForRestaurant(restaurant);          // alt for image
   li.append(image);
 
@@ -186,6 +239,17 @@ createRestaurantHTML = (restaurant) => {
 
   return li
 }
+
+
+// lazy loading for images
+// after every other resource is loaded, the restaurants img will load
+window.addEventListener("load", function(event) {
+    console.log("All resources finished loading!");
+
+    srcSetter();
+});
+
+
 
 /**
  * Add markers for current restaurants to the map.
